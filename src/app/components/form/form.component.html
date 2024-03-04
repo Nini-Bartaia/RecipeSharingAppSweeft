@@ -1,0 +1,55 @@
+<!-- <span>Home/dbkjsd</span> -->
+
+<span>test</span> <span>home</span>
+<img src="" alt="" />
+<div>
+  <p>new product</p>
+  <span>product detail</span>
+</div>
+
+<form action="" class="w-6/12 flex flex-col ml-40" [formGroup]="form">
+  <mat-form-field class="example-full-width">
+    <mat-label>First name</mat-label>
+    <input matInput formControlName="title" />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-label>Description</mat-label>
+    <textarea matInput formControlName="description"></textarea>
+  </mat-form-field>
+
+  <mat-form-field class="example-chip-list">
+    <mat-label>Ingredients</mat-label>
+    <mat-chip-grid #chipGrid>
+      @for (val of ingredients; track val) {
+        <mat-chip-row
+          (removed)="remove(val)"
+          [editable]="true"
+          (edited)="edit(val, $event)">
+          {{ val }}
+          <button matChipRemove>
+            <mat-icon>cancel</mat-icon>
+          </button>
+        </mat-chip-row>
+      }
+      <input
+        formControlName="ingredients"
+        placeholder="New Ingredient..."
+        [matChipInputFor]="chipGrid"
+        [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+        [matChipInputAddOnBlur]="addOnBlur"
+        (matChipInputTokenEnd)="add($event)" />
+    </mat-chip-grid>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Instructions</mat-label>
+    <textarea matInput formControlName="instruction"></textarea>
+  </mat-form-field>
+  <input type="file" formControlName="image" />
+
+  <button
+    (click)="onSave()"
+    class="bg-indigo-600 rounded-3xl w-20 h-10 flex flex-row items-center justify-center mr-44 mt-16">
+    <span class="text-white">Save</span>
+  </button>
+</form>

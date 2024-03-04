@@ -1,0 +1,66 @@
+<div class="flex flex-row items-center justify-between mt-10 mb-10">
+  <!-- <mat-form-field >
+        <input type="tel" matInput placeholder="Search">
+    </mat-form-field> -->
+  <h2
+    class="text-2xl md:text-3xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate ml-20">
+    Recipe List
+  </h2>
+
+  <button
+    class="bg-indigo-600 rounded-3xl w-20 h-10 flex flex-row items-center justify-center mr-44"
+    (click)="navigate()">
+    <mat-icon
+      role="img"
+      class="mat-icon notranslate icon-size-5 mat-icon-no-color"
+      aria-hidden="true"
+      data-mat-icon-type="svg"
+      data-mat-icon-name="plus"
+      data-mat-icon-namespace="heroicons_solid">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="white"
+        aria-hidden="true"
+        fit=""
+        height="100%"
+        width="100%"
+        preserveAspectRatio="xMidYMid meet"
+        focusable="false">
+        <path
+          fill-rule="evenodd"
+          d="M12 3.75a.75.75 0 01.75.75v6.75h6.75a.75.75 0 010 1.5h-6.75v6.75a.75.75 0 01-1.5 0v-6.75H4.5a.75.75 0 010-1.5h6.75V4.5a.75.75 0 01.75-.75z"
+          clip-rule="evenodd"></path>
+      </svg>
+    </mat-icon>
+    <span class="text-white">Add</span>
+  </button>
+</div>
+
+<div class="bg-white rounded-lg max-h-96 w-10/12 ml-20 overflow-x-scroll">
+  <table mat-table class="w-full table-fixed" [dataSource]="dataSource">
+    <!-- Position Column -->
+    <ng-container matColumnDef="image">
+      <th mat-header-cell *matHeaderCellDef>Image</th>
+      <td mat-cell *matCellDef="let element">
+        <img src="element.image" alt="ihih" />
+        <p>{{ element.image }}</p>
+      </td>
+    </ng-container>
+
+    <!-- title Column -->
+    <ng-container matColumnDef="title">
+      <th mat-header-cell *matHeaderCellDef>Title</th>
+      <td mat-cell *matCellDef="let element">{{ element?.title }}</td>
+    </ng-container>
+
+    <!-- Description Column -->
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef>Description</th>
+      <td mat-cell *matCellDef="let element">{{ element?.description }}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+  </table>
+</div>
