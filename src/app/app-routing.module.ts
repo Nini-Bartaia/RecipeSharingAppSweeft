@@ -12,7 +12,7 @@ const routes: Routes = [
     pathMatch: 'full',
   },
   { path: 'list', component: ListComponent },
-  { path: 'detail', component: DetailComponent },
+  { path: 'detail/:id', component: DetailComponent },
   { path: 'form', component: FormComponent },
   { path: '**', component: NotFoundComponent },
 ];

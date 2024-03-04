@@ -21,6 +21,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { HttpClientModule } from '@angular/common/http';
 import { RecipeService } from './store/services/recipe.service';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
   declarations: [
@@ -37,8 +39,10 @@ import { RecipeService } from './store/services/recipe.service';
     BrowserModule,
     AppRoutingModule,
     MatTableModule,
+    MatPaginatorModule,
     HttpClientModule,
     MatIconModule,
+    MatSortModule,
     MatFormFieldModule,
     MatInputModule,
     FormsModule,

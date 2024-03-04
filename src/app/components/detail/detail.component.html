@@ -1,1 +1,7 @@
-<p>detail works!</p>
+<div
+  *ngIf="recipe$ | async as recipe"
+  class="flex justify-around items-center mt-11">
+  <img [src]="recipe.image" alt="" class="w-96 h-96" />
+  <h2>{{ recipe.title }}</h2>
+  <p>{{ recipe.description }}</p>
+</div>

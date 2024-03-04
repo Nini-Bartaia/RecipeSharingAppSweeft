@@ -1,15 +1,6 @@
-<!-- <span>Home/dbkjsd</span> -->
-
-<span>test</span> <span>home</span>
-<img src="" alt="" />
-<div>
-  <p>new product</p>
-  <span>product detail</span>
-</div>
-
 <form action="" class="w-6/12 flex flex-col ml-40" [formGroup]="form">
   <mat-form-field class="example-full-width">
-    <mat-label>First name</mat-label>
+    <mat-label>Title</mat-label>
     <input matInput formControlName="title" />
   </mat-form-field>
 
@@ -45,11 +36,47 @@
     <mat-label>Instructions</mat-label>
     <textarea matInput formControlName="instruction"></textarea>
   </mat-form-field>
-  <input type="file" formControlName="image" />
+  <!-- <input type="file" formControlName="image" /> -->
+
+  <button
+    (click)="file.click()"
+    class="bg-indigo-600 rounded-3xl w-40 h-10 flex flex-row items-center justify-center mr-44">
+    <mat-icon
+      role="img"
+      class="mat-icon notranslate icon-size-5 mat-icon-no-color"
+      aria-hidden="true"
+      data-mat-icon-type="svg"
+      data-mat-icon-name="plus"
+      data-mat-icon-namespace="heroicons_solid">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="white"
+        aria-hidden="true"
+        fit=""
+        height="100%"
+        width="100%"
+        preserveAspectRatio="xMidYMid meet"
+        focusable="false">
+        <path
+          fill-rule="evenodd"
+          d="M12 3.75a.75.75 0 01.75.75v6.75h6.75a.75.75 0 010 1.5h-6.75v6.75a.75.75 0 01-1.5 0v-6.75H4.5a.75.75 0 010-1.5h6.75V4.5a.75.75 0 01.75-.75z"
+          clip-rule="evenodd"></path>
+      </svg>
+    </mat-icon>
+    <span class="text-white">Upload Image</span>
+    <input
+      formControlName="image"
+      hidden
+      #file
+      type="file"
+      [multiple]="false"
+      (change)="onFileUpload($event, file)" />
+  </button>
 
   <button
     (click)="onSave()"
     class="bg-indigo-600 rounded-3xl w-20 h-10 flex flex-row items-center justify-center mr-44 mt-16">
-    <span class="text-white">Save</span>
+    <span class="text-white"> {{ selectedItem ? 'Update' : 'Save' }}</span>
   </button>
 </form>

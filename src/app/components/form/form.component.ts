@@ -5,7 +5,16 @@ import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { recipeDto } from '../../store/state/recipeDto';
 import { Store } from '@ngrx/store';
-import { saveButtonClicked } from '../../store/actions/recipe-list-page.action';
+import {
+  saveButtonClicked,
+  uploadButtonClicked,
+} from '../../store/actions/recipe-list-page.action';
+import { Router } from '@angular/router';
+import {
+  selectedIdSelector,
+  selectedItemSelector,
+  uploadedImageSelector,
+} from '../../store/selectors/recipesList.selector';
 
 export interface Ingredients {
   name: string;
@@ -17,12 +26,45 @@ export interface Ingredients {
   styleUrl: './form.component.scss',
 })
 export class FormComponent {
-  constructor(private store: Store) {}
+  constructor(
+    private store: Store,
+    private router: Router
+  ) {
+    this.uploadedImage$.subscribe(res => {
+      this.image = res;
+    });
+
+    this.store.select(selectedItemSelector).subscribe(res => {
+      this.selectedItem = res;
+      this.populateForm();
+    });
+  }
+
+  selectedId$ = this.store.select(selectedIdSelector);
+
+  selectedItem!: recipeDto;
   addOnBlur = true;
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   ingredients: string[] = [];
+  uploadedImage$ = this.store.select(uploadedImageSelector);
+  image: string = '';
+  showSave: boolean = false;
+  showUpdate: boolean = false;
 
   announcer = inject(LiveAnnouncer);
+
+  populateForm() {
+    if (this.selectedItem) {
+      console.log(this.selectedItem);
+      this.form.patchValue({
+        title: this.selectedItem.title,
+        description: this.selectedItem.description,
+        ingredients: this.selectedItem.ingredients as [],
+        instruction: this.selectedItem.instruction,
+        image: this.selectedItem.image,
+      });
+    }
+  }
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
@@ -68,7 +110,7 @@ export class FormComponent {
   form = new FormGroup({
     title: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required),
-    ingredients: new FormControl(null, Validators.required),
+    ingredients: new FormControl([], Validators.required),
     instruction: new FormControl('', Validators.required),
     image: new FormControl(''),
   });
@@ -79,9 +121,21 @@ export class FormComponent {
       description: this.form.controls.description.value,
       ingredients: this.ingredients,
       instruction: this.form.controls.instruction.value,
-      image: this.form.controls.image.value,
+      image: this.image,
     };
+    if (this.form.valid && this.image) {
+      console.log(this.form.valid);
+      this.store.dispatch(saveButtonClicked({ payload: recipeDto }));
+      this.router.navigate(['list']);
+    }
+  }
 
-    this.store.dispatch(saveButtonClicked({ payload: recipeDto }));
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onFileUpload(event: any, file: HTMLInputElement) {
+    if (event && event.target.files?.length > 0) {
+      this.store.dispatch(uploadButtonClicked({ file: event.target.files[0] }));
+    }
+
+    file.value = '';
   }
 }

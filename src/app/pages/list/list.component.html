@@ -1,11 +1,16 @@
 <div class="flex flex-row items-center justify-between mt-10 mb-10">
-  <!-- <mat-form-field >
-        <input type="tel" matInput placeholder="Search">
-    </mat-form-field> -->
   <h2
     class="text-2xl md:text-3xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate ml-20">
     Recipe List
   </h2>
+
+  <mat-form-field>
+    <input
+      type="tel"
+      matInput
+      placeholder="Search"
+      [formControl]="filterFormControl" />
+  </mat-form-field>
 
   <button
     class="bg-indigo-600 rounded-3xl w-20 h-10 flex flex-row items-center justify-center mr-44"
@@ -37,30 +42,78 @@
   </button>
 </div>
 
-<div class="bg-white rounded-lg max-h-96 w-10/12 ml-20 overflow-x-scroll">
-  <table mat-table class="w-full table-fixed" [dataSource]="dataSource">
+<div class="rounded-lg max-h-96 w-10/12 ml-20 overflow-x-scroll">
+  <table
+    mat-table
+    class="w-full table-fixed bg-gray-200"
+    matSortDisableClear="true"
+    [dataSource]="dataSource"
+    matSort
+    (matSortChange)="sortData($event)"
+    matSortDisableClear="true"
+    mat-table>
     <!-- Position Column -->
     <ng-container matColumnDef="image">
       <th mat-header-cell *matHeaderCellDef>Image</th>
       <td mat-cell *matCellDef="let element">
-        <img src="element.image" alt="ihih" />
-        <p>{{ element.image }}</p>
+        <img class="w-20 h-20" [src]="element.image" alt="Image" />
       </td>
     </ng-container>
 
     <!-- title Column -->
     <ng-container matColumnDef="title">
-      <th mat-header-cell *matHeaderCellDef>Title</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Title</th>
       <td mat-cell *matCellDef="let element">{{ element?.title }}</td>
     </ng-container>
 
     <!-- Description Column -->
     <ng-container matColumnDef="description">
-      <th mat-header-cell *matHeaderCellDef>Description</th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Description</th>
       <td mat-cell *matCellDef="let element">{{ element?.description }}</td>
+    </ng-container>
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <button (click)="edit(element.id)">
+          <span>Edit</span>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="remove">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <button
+          mat-icon-button
+          color="warn"
+          matTooltip="Remove"
+          (click)="removeBtn(element.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="view">
+      <th mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-icon-button (click)="view(element.id)">
+          <span>View</span>
+        </button>
+      </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 </div>
+
+<mat-paginator
+  #paginator
+  class="demo-paginator"
+  [pageIndex]="this.currentFilterParams.pageIndex"
+  [pageSize]="this.currentFilterParams.pageSize"
+  [pageSizeOptions]="[5, 10, 25, 100]"
+  [length]="10"
+  (page)="handlePageEvent($event)"
+  aria-label="Select page">
+</mat-paginator>
